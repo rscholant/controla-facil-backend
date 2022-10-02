@@ -76,7 +76,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -85,7 +85,14 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@config/(.*)": "<rootDir>/src/config/$1",
+      "@helpers/(.*)": "<rootDir>/src/helpers/$1",
+      "@interfaces/(.*)": "<rootDir>/src/interfaces/$1",
+      "@modules/(.*)": "<rootDir>/src/modules/$1",
+      "@shared/(.*)": "<rootDir>/src/shared/$1"
+    }
   },
   "lint-staged": {
     "**/*.ts": [
