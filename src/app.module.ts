@@ -5,6 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from '@shared/shared.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD, Reflector } from '@nestjs/core';
+import { JwtAuthGuard } from '@modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -12,8 +16,17 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(process.env.MONGO_URI),
     SharedModule,
     TerminusModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useFactory: (ref) => new JwtAuthGuard(ref),
+      inject: [Reflector],
+    },
+  ],
 })
 export class AppModule {}
