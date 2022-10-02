@@ -34,7 +34,7 @@ export class DefaultCrudService<T> {
   }
 
   async findOne(filter: FilterQuery<T>): Promise<DefaultSingleResponse<T>> {
-    const data = await this.model.find(filter).exec();
+    const data = await this.model.findOne(filter).exec();
     return {
       data,
       status: HttpStatus.OK,
@@ -52,6 +52,7 @@ export class DefaultCrudService<T> {
         message: 'Item created.',
       };
     } catch (err) {
+      console.log(err);
       if (err.code === 11000) {
         throw new HttpBadRequestException(`User already exists`);
       }

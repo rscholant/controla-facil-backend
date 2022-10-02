@@ -29,7 +29,9 @@ import {
   DefaultPaginatedResponse,
   DefaultSingleResponse,
 } from '@interfaces/response';
-import { AllowAny } from '@shared/custom-decorators';
+import { AllowAny, Serialize } from '@shared/custom-decorators';
+import { hashSync } from 'bcryptjs';
+import { User } from '@modules/users/schemas/user.schema';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -54,7 +56,10 @@ export class UsersController {
   })
   @AllowAny()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create({
+      ...createUserDto,
+      password: hashSync(createUserDto.password, 10),
+    });
   }
 
   @Get()
@@ -71,7 +76,7 @@ export class UsersController {
     description: 'Erro interno',
   })
   @ApiUnauthorizedResponse({ description: 'Usuário não autorizado.' })
-  @AllowAny()
+  @Serialize(User)
   findAll(@Query() query?: DefaultPaginatedQueryRequest) {
     return this.usersService.findAll(query);
   }
@@ -90,7 +95,6 @@ export class UsersController {
     description: 'Erro interno',
   })
   @ApiParam({ name: 'id', description: 'ID do usuário a ser consultado' })
-  @AllowAny()
   findOne(@Param('id') id: string) {
     return this.usersService.findOne({ _id: id });
   }
@@ -113,9 +117,11 @@ export class UsersController {
     description: 'Erro interno',
   })
   @ApiParam({ name: 'id', description: 'ID do usuário a ser alterado' })
-  @AllowAny()
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, {
+      ...updateUserDto,
+      password: updateUserDto.password && hashSync(updateUserDto.password, 10),
+    });
   }
 
   @Delete(':id')
