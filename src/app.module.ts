@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '@modules/auth/jwt-auth.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(process.env.MONGO_URI, { dbName: 'controla-facil' }),
     SharedModule,
     TerminusModule,
     UsersModule,
