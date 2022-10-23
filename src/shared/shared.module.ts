@@ -5,6 +5,7 @@ import { ApiLoggerService } from '@shared/logger/logger.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtStrategy } from '@modules/auth/jwt.strategy';
 import { UsersModule } from '@modules/users/users.module';
+import { EmailService } from '@shared/send-grid/email.service';
 
 @Global()
 @Module({
@@ -16,7 +17,8 @@ import { UsersModule } from '@modules/users/users.module';
       useClass: LoggerInterceptor,
     },
     JwtStrategy,
+    EmailService,
   ],
-  exports: [ApiLoggerService],
+  exports: [ApiLoggerService, EmailService],
 })
 export class SharedModule {}
