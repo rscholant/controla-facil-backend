@@ -49,6 +49,7 @@ async function bootstrap() {
   );
   app.useLogger(new ApiLoggerService());
   app.useGlobalInterceptors(new TimeoutInterceptor());
+  console.log(process.env.PORT || 8080);
   await app.listen(process.env.PORT || 8080);
 }
 bootstrap();

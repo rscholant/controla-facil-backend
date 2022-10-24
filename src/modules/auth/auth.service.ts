@@ -14,13 +14,12 @@ export class AuthService {
   ) {}
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne({ email });
-    if (!user) return null;
-    const passwordValid = compareSync(password, (user.data as User).password);
     if (!user) {
       throw new HttpNotAcceptableException('could not find the user');
     }
+    const passwordValid = compareSync(password, (user.data as User).password);
     if (user && passwordValid) {
-      return user;
+      return user.data;
     }
     return null;
   }
