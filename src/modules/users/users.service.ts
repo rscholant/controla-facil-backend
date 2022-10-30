@@ -15,7 +15,7 @@ export class UsersService extends DefaultCrudService<User> {
     @InjectModel(User.name) private userModel: Model<User>,
     private emailService: EmailService,
   ) {
-    super(userModel);
+    super(userModel, 'company');
   }
 
   async create(createDto: CreateUserDto): Promise<DefaultSingleResponse<User>> {
