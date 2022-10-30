@@ -16,6 +16,9 @@ export class Company {
   @Prop({ unique: true })
   @Expose()
   cnpj: string;
+
+  @Expose()
+  users: User[];
 }
 
 export type CompanyDocument = Company & Document;
