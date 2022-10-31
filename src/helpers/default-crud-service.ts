@@ -9,7 +9,10 @@ import { DefaultPaginatedQueryRequest } from '@interfaces/request';
 import { HttpBadRequestException } from '@shared/exceptions';
 
 export class DefaultCrudService<T> {
-  constructor(private readonly model: Model<T>) {}
+  constructor(
+    private readonly model: Model<T>,
+    private readonly populate?: string,
+  ) {}
 
   async findAll(
     searchParams: DefaultPaginatedQueryRequest,
@@ -25,7 +28,12 @@ export class DefaultCrudService<T> {
       }
     }
     const skip = (pageNumber ? pageNumber - 1 : 0) * limit;
-    const data = await this.model.find().skip(skip).limit(limit).exec();
+    const data = await this.model
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .populate(this.populate)
+      .exec();
     return {
       data,
       page: 1,
@@ -34,9 +42,12 @@ export class DefaultCrudService<T> {
   }
 
   async findOne(filter: FilterQuery<T>): Promise<DefaultSingleResponse<T>> {
-    const data = await this.model.findOne(filter).exec();
+    const data = await this.model
+      .findOne(filter)
+      .populate(this.populate)
+      .exec();
     return {
-      data,
+      data: data as T,
       status: HttpStatus.OK,
       message: '',
     };
