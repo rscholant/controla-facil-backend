@@ -5,6 +5,9 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()
 export class User {
+  @Expose()
+  id: string;
+
   @Prop()
   @Expose()
   name: string;

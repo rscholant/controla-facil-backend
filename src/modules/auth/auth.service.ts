@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne({ email });
-    if (!user) {
+    if (!user.data) {
       throw new HttpNotAcceptableException('could not find the user');
     }
     const passwordValid = compareSync(password, (user.data as User).password);
@@ -24,7 +24,11 @@ export class AuthService {
     return null;
   }
   async login(user: any) {
-    const payload = { username: user.username, sub: user._id };
+    console.log(
+      '🚀 ~ file: auth.service.ts ~ line 33 ~ AuthService ~ login ~ user',
+      user,
+    );
+    const payload = { name: user.name, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
       user: plainToInstance(User, user, { excludeExtraneousValues: true }),

@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class CompanyService extends DefaultCrudService<Company> {
-  constructor(@InjectModel(Company.name) private companyModel: Model<Company>) {
+  constructor(@InjectModel(Company.name) companyModel: Model<Company>) {
     super(companyModel, 'users');
   }
 }

@@ -65,9 +65,9 @@ export class DefaultCrudService<T> {
     } catch (err) {
       console.log(err);
       if (err.code === 11000) {
-        throw new HttpBadRequestException(`User already exists`);
+        throw new HttpBadRequestException(`Register already exists`);
       }
-      throw new HttpBadRequestException(`Error to insert user`, { err });
+      throw new HttpBadRequestException(`Error to insert register`, { err });
     }
   }
 
